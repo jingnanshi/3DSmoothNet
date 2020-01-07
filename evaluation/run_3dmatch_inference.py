@@ -23,5 +23,4 @@ if __name__ == "__main__":
         cmd_args = "python " + cnn_exe + " --run_mode=test " + "--evaluate_input_folder=" + sdv_input_path +  " --evaluate_output_folder=" + descriptor_output_path
 
         subprocess.call(cmd_args, shell=True, cwd=os.path.abspath("../"))
-        import pdb; pdb.set_trace()
 
