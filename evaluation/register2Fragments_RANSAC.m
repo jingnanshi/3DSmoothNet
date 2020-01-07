@@ -1,4 +1,6 @@
-function [numInliers,inlierRatio,gtFlag] = register2Fragments_PPFnet(scenePath,keypointsPath,descriptorPath,fragment1Name,fragment2Name,descriptorName)
+function [gt_flag, ] = ...
+    register2Fragments_RANSAC(scenePath,keypointsPath,...
+    descriptorPath,fragment1Name,fragment2Name,descriptorName)
 % Script to run the evaluation of the 3DMatch data set 
 % as described in the supplementary material of the 
 % The Perfect Match: 3D Point Cloud Matching with Smoothed Densities
@@ -14,6 +16,15 @@ function [numInliers,inlierRatio,gtFlag] = register2Fragments_PPFnet(scenePath,k
 % LICENSE. Please retain this notice and LICENSE if you use 
 % this file (or any portion of it) in your project.
 % ---------------------------------------------------------
+%
+% Modified by Jingnan Shi to perform registration with RANSAC
+%
+% Return:
+% - gt_flag: 1 if gt transformation between the two fragmets exists
+% - gt_trans: gt transformation
+% - est_trans: estimation transformation
+% - rot_error: rotational error
+% - trans_error: translational error
 
 % Load fragment point clouds
 fragment1PointCloud = pcread(fullfile(scenePath,sprintf('%s.ply',fragment1Name)));
@@ -101,14 +112,14 @@ else
     % TODO: Perform RANSAC 
     % or perform TEASER++
     % Estimate initial transformation with RANSAC to align fragment 2 keypoints to fragment 1 keypoints
-    % try
-    %     [estimateRt,inlierIdx] = ransacfitRt([fragment1MatchKeypoints';fragment2MatchKeypoints'], 0.05, 0);
-    %     estimateRt = [estimateRt;[0,0,0,1]];
-    % catch
-    %     fprintf('Error: not enough mutually matching keypoints!\n');
-    %     estimateRt = eye(4);
-    %     inlierIdx = [];
-    % end
+    try
+        [estimateRt,inlierIdx] = ransacfitRt([fragment1MatchKeypoints';fragment2MatchKeypoints'], 0.05, 0);
+        estimateRt = [estimateRt;[0,0,0,1]];
+    catch
+        fprintf('Error: not enough mutually matching keypoints!\n');
+        estimateRt = eye(4);
+        inlierIdx = [];
+    end
     
     distances  = sqrt(sum((fragment1Points-fragment2Points).^2,2));
     numInliers = length(find(distances < 0.1));

@@ -11,7 +11,9 @@ descriptorIDX = 1;
 dimIDX = 1;
 
 
-descriptorName = {'01_3DSmoothNet','02_Occupancy','03_Occupancy_NoLRF','04_NoLRF','05_CGF','06_SHOT','07_3DMatch','08_FPFH'};
+%descriptorName = {'01_3DSmoothNet','02_Occupancy','03_Occupancy_NoLRF','04_NoLRF','05_CGF','06_SHOT','07_3DMatch','08_FPFH'};
+descriptorName = {'01_3DSmoothNet'};
+
 dim = {'16dim','32dim','64dim','128dim'};
 dataPath = '../data/evaluate/input_data/3DMatch_dataset/'; % Location of scene files
 intermPath = fullfile('../data/evaluate/input_data/3DMatch_dataset/registration_interim_results',descriptorName{descriptorIDX},dim{dimIDX}); % Location of intermediate registration results

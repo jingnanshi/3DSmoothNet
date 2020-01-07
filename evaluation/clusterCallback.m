@@ -20,6 +20,7 @@ function clusterCallback(jobID,fragmentPairs,sceneName,dim,descriptorName)
     scenePath = fullfile('../data/evaluate/input_data/3DMatch_dataset/',sceneName); % Location of scene fragment point clouds
     keypointsPath = fullfile(scenePath,'01_Keypoints');
     resultsPath = fullfile('../data/evaluate/input_data/3DMatch_dataset/registration_interim_results',descriptorName,dim,sceneName);
+    % TODO: This needs to be changed to descriptorName, sceneName, dim
     descriptorsPath = fullfile('../data/evaluate/output_data/3DMatch_dataset/',descriptorName,dim,sceneName);
     
     % Add libraries
@@ -56,4 +57,6 @@ function clusterCallback(jobID,fragmentPairs,sceneName,dim,descriptorName)
     fid = fopen(resultPathFull,'w');
     fprintf(fid,'%s\t %s\t %d\t %15.8e\t %d\t',fragment1Name,fragment2Name,numInliers,inlierRatio,gtFlag);
     fclose(fid);
+    
+    % TODO: Add code to register fragments using RANSAC & TEASER
 end
